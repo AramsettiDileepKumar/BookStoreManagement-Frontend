@@ -1,0 +1,62 @@
+<div class="bookdetails-outer-cnt">
+    <div class="back-to-dashboard">
+        <a routerLink="/dashboard/books">
+            <h3>Home</h3>
+        </a>
+        <span> /Book(01) </span>
+    </div>
+    <div class="book-details-cnt">
+        <div class="book-image-and-options">
+            <div class="book-image">
+                <img src="https://public-v2links.adobecc.com/d096df37-ca37-4026-553f-8cfa6bec09ec/component?params=component_id%3Adbd4f4a0-20d3-48b1-ae13-926e5ed7f1fb&params=version%3A0&token=1716019330_da39a3ee_8e09bb4485e7f45f725ca426b468d3e15ab49936&api_key=CometServer1"
+                    alt="Don't Make Me Think" height="300px" width="220px" />
+            </div>
+            <div class="options">
+                <button mat-flat-button class="cart-button" *ngIf="!addedToBag" (click)="addToBag()">
+          ADD TO BAG
+        </button>
+                <div *ngIf="addedToBag" class="quantity-update">
+                    <span class="symbol" (click)="decreaseCount()">-</span>
+                    <span class="number-of-books">{{ count }}</span>
+                    <span class="symbol" (click)="increaseCount()">+</span>
+                </div>
+                <button mat-flat-button class="wishlist-button">WISHLIST</button>
+            </div>
+        </div>
+
+        <div class="book-details">
+            <span><h2>Don't Make Me Think</h2></span>
+            <span>by Steve Krug</span>
+            <div class="rating-quantity">
+                <span class="rating">4.5 &#9733;</span>
+                <span>(20)</span>
+            </div>
+            <span><del>Rs. 2000</del><b> Rs. 1500</b></span>
+            <hr />
+            <p>Book Detail</p>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+            <hr />
+            <span>Customer Feedback</span>
+            <div class="feedback-section">
+                <div class="overall-rating">
+                    <span>Overall rating</span>
+                    <div class="stars">&#9734; &#9734; &#9734; &#9734; &#9734;</div>
+                    <textarea placeholder="Write your review"></textarea>
+                    <button class="submit-button">Submit</button>
+                </div>
+                <div class="user-feedback">
+                    <div class="feedback-item">
+                        <span>Aniket Chile</span>
+                        <div class="user-stars">
+                            &#9733; &#9733; &#9733; &#9733; &#9734;
+                        </div>
+                        <p>Great book on web usability.</p>
+                    </div>
+                    <!-- Add more feedback items as needed -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
