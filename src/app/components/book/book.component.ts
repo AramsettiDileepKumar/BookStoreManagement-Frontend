@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { BookService } from 'src/app/services/bookservice/book.service';
+import { DataService } from 'src/app/services/dataservice/data.service';
 import { BookObj } from 'src/assets/bookInterface';
 
 @Component({
@@ -11,11 +13,14 @@ export class BookComponent implements OnInit {
   @Input() bookObjList!: BookObj[];
   bookList: BookObj[] = [];
 
-  constructor(private bookService: BookService) {}
+  constructor(private dataService: DataService, private router: Router) {}
 
   ngOnInit(): void {
-    this.bookService.currentStateBookList.subscribe(
+    this.dataService.currentStateBookList.subscribe(
       (res) => (this.bookList = res)
     );
+  }
+  handleBook(book: BookObj) {
+    this.router.navigate(['/bookdetails', book.bookId]);
   }
 }
