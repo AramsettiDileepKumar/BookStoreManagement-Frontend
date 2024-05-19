@@ -1,5 +1,5 @@
 <div class="book-outer-container">
-    <div class="book-container" *ngFor="let book of bookObjList">
+    <div class="book-container" *ngFor="let book of bookObjList" (click)="handleBook(book)">
         <div class="book-image-background-container">
             <img class="book-image" [src]="book.bookImage" alt="Image not found" />
         </div>

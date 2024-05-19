@@ -2,9 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { BookService } from 'src/app/services/bookservice/book.service';
+import { DataService } from 'src/app/services/dataservice/data.service';
 import { HttpService } from 'src/app/services/httpservice/http.service';
 import { SEARCH_ICON, PROFILE_ICON, CART_ICON } from 'src/assets/svg-icons';
+import { LoginComponent } from '../login/login.component';
+import { LoginSignupComponent } from '../login-signup/login-signup.component';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -18,7 +22,8 @@ export class HeaderComponent implements OnInit {
     private matIconRegistry: MatIconRegistry,
     private dialog: MatDialog,
     private httpservice: HttpService,
-    private bookService: BookService
+    private dataService: DataService,
+    private router: Router
   ) {
     matIconRegistry.addSvgIconLiteral(
       'search-icon',
@@ -36,7 +41,20 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.httpservice.getAllbook().subscribe((res) => {
-      this.bookService.changeCurrentStateBookList(res);
+      this.dataService.changeCurrentStateBookList(res);
     });
+  }
+  login() {
+    const dialogRef = this.dialog.open(LoginSignupComponent, {
+      width: '720px',
+      height: '480px',
+    });
+    dialogRef.afterClosed().subscribe((result) => {});
+
+    this.loginclick = !this.loginclick;
+  }
+  logOut() {
+    localStorage.clear();
+    this.router.navigate(['/books']);
   }
 }

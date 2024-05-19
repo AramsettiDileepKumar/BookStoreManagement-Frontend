@@ -12,18 +12,18 @@
         <mat-icon class="profile-icon" svgIcon="profile-icon" aria-hidden="false" aria-label="Search SVG icon"></mat-icon>
         <span>Profile</span>
     </div>
-    <div class="cart" routerLink="/dashboard/cart">
+    <div class="cart" routerLink="/cart">
         <mat-icon class="cart-icon" svgIcon="cart-icon" aria-hidden="false" aria-label="Search SVG icon"></mat-icon>
         <span>Cart</span>
     </div>
 </div>
 
 <mat-menu #profileMenu>
-    <span>Welcome</span><br />
-    <button mat-menu-item class="login-btn">
+    <span class="welcome">Welcome</span><br />
+    <button mat-menu-item class="login-btn" (click)="login()">
     <span>LOGIN/SIGNUP</span>
   </button>
-    <button mat-menu-item class="login-btn">Logout</button>
-    <div class="order-icon">My Orders</div>
-    <div class="heart-icon">&#x2764; Wishlist</div>
+    <button mat-menu-item class="login-btn" (click)="logOut()">Logout</button>
+    <!-- <div class="order-icon">My Orders</div>
+    <div class="heart-icon">&#x2764; Wishlist</div> -->
 </mat-menu>

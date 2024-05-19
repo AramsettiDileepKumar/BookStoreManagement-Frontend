@@ -10,10 +10,10 @@ import { BookObj } from 'src/assets/bookInterface';
 })
 export class BookContainerComponent implements OnInit {
   booksList: BookObj[] = [];
-  constructor(private bookservice: BookService) {}
+  constructor(private dataservice: DataService) {}
 
   ngOnInit(): void {
-    this.bookservice.currentStateBookList.subscribe(
+    this.dataservice.currentStateBookList.subscribe(
       (res) => (this.booksList = res)
     );
   }
