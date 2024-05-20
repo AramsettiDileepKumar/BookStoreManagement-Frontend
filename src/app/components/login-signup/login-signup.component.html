@@ -1,24 +1,29 @@
 <div class="container">
-    <div class="body">
-        <div class="img-object">
-            <img class="image" src="assets/images/shopping.png" alt="" srcset="" height="245px" width="245px" />
-            <p class="para">ONLINE BOOK SHOPPING</p>
-        </div>
-        <div class="login-signup-container">
-            <div class="login-signup-row">
-                <ul>
-                    <li>
-                        <a (click)="goToLogin()" [ngClass]="{ active: login }">LOGIN</a>
-                    </li>
-                    <li>
-                        <a (click)="goToSignUp()" [ngClass]="{ active: !login }">SIGNUP</a>
-                    </li>
-                </ul>
-            </div>
-            <div>
-
-            </div>
-            <app-login *ngIf="login"></app-login>
-        </div>
+  <div class="body">
+    <div class="img-object">
+      <img
+        class="image"
+        src="/assets/images/shopping.png"
+        alt=""
+        srcset=""
+        height="245px"
+        width="245px"
+      />
+      <p class="para">ONLINE BOOK SHOPPING</p>
     </div>
+    <div class="login-signup-container">
+      <div class="login-signup-row">
+        <ul>
+          <li>
+            <a (click)="goToLogin()" [ngClass]="{ active: login }">LOGIN</a>
+          </li>
+          <li>
+            <a (click)="goToSignUp()" [ngClass]="{ active: !login }">SIGNUP</a>
+          </li>
+        </ul>
+
+        <app-login *ngIf="login"></app-login>
+      </div>
+    </div>
+  </div>
 </div>

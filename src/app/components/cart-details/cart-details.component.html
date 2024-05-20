@@ -1,61 +1,77 @@
 <div class="cart-outer-cnt">
-    <div class="back-to-dashboard">
-        <a routerLink="/dashboard/books">
-            <h3>Home</h3>
-        </a>
-        <span>/Books</span>
-    </div>
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="#" routerLink="/books">Home</a> / <a>My Cart</a>
+  </div>
 
-    <div *ngIf="cartItems$ | async as cartItems; else emptyCart">
-        <div *ngFor="let item of cartItems" class="cart-details-container">
-            <!-- Book Details -->
-            <div class="cart-section">
-                <h3>My cart</h3>
-                <div class="book-details">
-                    <div class="book-item">
-                        <img [src]="item.bookImage" alt="Book Cover" />
-                        <div class="book-info">
-                            <h4>Title: {{ item.bookName }}</h4>
-                            <p>Author: {{ item.authorName }}</p>
-                            <p>Price: Rs. {{ item.price }} <del>Rs. 699</del></p>
-                            <div class="quantity-update">
-                                <span class="symbol" (click)="decreaseCount(item)">-</span>
-                                <span class="number-of-books">{{ item.quantity }}</span>
-                                <span class="symbol" (click)="increaseCount(item)">+</span>
-                            </div>
-                        </div>
-                        <button class="place-order-button">Remove</button>
-                        <button class="place-order-button">Place Order</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <ng-template #emptyCart>
-        <p>Your cart is empty.</p>
-    </ng-template>
-
+  <!-- Cart Items -->
+  <ng-container *ngIf="cartItems$ | async as cartItems; else emptyCart">
     <div class="cart-details-container">
-        <!-- Address Details -->
-        <div class="cart-section" (click)="toggleAddressDetails()">
-            <h3>Address Details</h3>
-            <div class="address-details" *ngIf="showAddressDetails">
-                <p>Name: John Doe</p>
-                <p>Address: 123 Street, City</p>
-                <p>Phone: +1234567890</p>
-                <p>Email: johndoe@gmail.com</p>
-            </div>
+      <!-- Book Details -->
+      <div class="cart-section">
+        <div class="cart-cnt">
+          <h3>My cart</h3>
+          <div class="loc-icon-cnt">
+            <span class="loc-icon">
+              <mat-icon svgIcon="location-icon"></mat-icon>
+              Dileep,Bengalore,No...
+              <mat-icon svgIcon="drop-down-icon"></mat-icon>
+            </span>
+          </div>
         </div>
 
-        <!-- Order Summary -->
-        <div class="cart-section" (click)="toggleOrderSummary()">
-            <h3>Order Summary</h3>
-            <div class="order-summary" *ngIf="showOrderSummary">
-                <p>Subtotal: Rs.</p>
-                <p>Shipping: Rs. 50.00</p>
-                <p>Total: Rs.</p>
+        <div class="book-details">
+          <div *ngFor="let item of cartItems" class="book-item">
+            <img [src]="item.bookImage" alt="Book Cover" />
+            <div class="book-info">
+              <h4>Title: {{ item.bookName }}</h4>
+              <p>Author: {{ item.authorName }}</p>
+              <p>Price: Rs. {{ item.price }} <del>Rs. 699</del></p>
+              <div class="quantity-update">
+                <span class="symbol" (click)="decreaseCount(item)">-</span>
+                <span class="number-of-books">{{ item.quantity }}</span>
+                <span class="symbol" (click)="increaseCount(item)">+</span>
+                <button (click)="removeFromCart(item)">Remove</button>
+              </div>
             </div>
+          </div>
+          <button
+            class="place-order-button"
+            (click)="handlePlaceOrder(cartItems)"
+          >
+            Place Order
+          </button>
         </div>
+      </div>
     </div>
+  </ng-container>
+
+  <!-- Empty Cart Message -->
+  <ng-template #emptyCart>
+    <p>Your cart is empty.</p>
+  </ng-template>
+
+  <!-- Address Details & Order Summary -->
+  <div class="cart-details-container">
+    <!-- Address Details -->
+    <div class="cart-section" (click)="toggleAddressDetails()">
+      <h3>Address Details</h3>
+      <div class="address-details" *ngIf="showAddressDetails">
+        <p>Name: John Doe</p>
+        <p>Address: 123 Street, City</p>
+        <p>Phone: +1234567890</p>
+        <p>Email: johndoe@gmail.com</p>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="cart-section" (click)="toggleOrderSummary()">
+      <h3>Order Summary</h3>
+      <div class="order-summary" *ngIf="showOrderSummary">
+        <p>Subtotal: Rs.</p>
+        <p>Shipping: Rs. 50.00</p>
+        <p>Total: Rs.</p>
+      </div>
+    </div>
+  </div>
 </div>

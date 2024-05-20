@@ -16,9 +16,7 @@ export class BookComponent implements OnInit {
   constructor(private dataService: DataService, private router: Router) {}
 
   ngOnInit(): void {
-    this.dataService.currentStateBookList.subscribe(
-      (res) => (this.bookList = res)
-    );
+    this.dataService.currentBookList.subscribe((res) => (this.bookList = res));
   }
   handleBook(book: BookObj) {
     this.router.navigate(['/bookdetails', book.bookId]);

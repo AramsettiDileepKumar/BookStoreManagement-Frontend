@@ -13,8 +13,6 @@ export class BookContainerComponent implements OnInit {
   constructor(private dataservice: DataService) {}
 
   ngOnInit(): void {
-    this.dataservice.currentStateBookList.subscribe(
-      (res) => (this.booksList = res)
-    );
+    this.dataservice.currentBookList.subscribe((res) => (this.booksList = res));
   }
 }
