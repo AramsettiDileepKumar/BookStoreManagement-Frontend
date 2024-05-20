@@ -5,10 +5,8 @@ import { BookObj } from 'src/assets/bookInterface';
   providedIn: 'root',
 })
 export class DataService {
-  private booksList = new BehaviorSubject<BookObj[]>([]);
-  private bookList: BookObj[] = [];
   bookListState = new BehaviorSubject<BookObj[]>([]);
-  currentStateBookList = this.bookListState.asObservable();
+  currentBookList = this.bookListState.asObservable();
   changeCurrentStateBookList(value: any) {
     this.bookListState.next(value);
   }
@@ -26,9 +24,7 @@ export class DataService {
     }
     if (this.cartItems[book.bookId]) {
       console.log('cart');
-
       this.cartItems[book.bookId].quantity += quantity;
-      // Prevent quantity from going below 1
       if (this.cartItems[book.bookId].quantity < 1) {
         this.cartItems[book.bookId].quantity = 1;
       }
@@ -59,5 +55,24 @@ export class DataService {
     const cartItemsArray = Object.values(this.cartItems);
     this.cartItemsSubject.next(cartItemsArray);
     this.cartItemCount.next(cartItemsArray.length);
+  }
+  updateCartItemQuantity(book: BookObj, quantity: number) {
+    if (book.bookId === undefined) {
+      console.error('Book ID is undefined');
+      return;
+    }
+
+    if (this.cartItems[book.bookId]) {
+      this.cartItems[book.bookId].quantity = quantity;
+      this.updateCartItemsSubject();
+    }
+  }
+  removeFromCart(book: BookObj) {
+    if (book.bookId === undefined) {
+      console.error('Book ID is undefined');
+      return;
+    }
+    delete this.cartItems[book.bookId];
+    this.updateCartItemsSubject();
   }
 }

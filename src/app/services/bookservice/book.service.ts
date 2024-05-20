@@ -9,10 +9,16 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class BookService {
   constructor(private httpService: HttpService) {}
-  getAllCartDetails(): Observable<any> {
-    return this.httpService.getAllCartDetails();
+  getAllCartDetails(data?: any): Observable<any> {
+    return this.httpService.getAllCartDetails(data);
   }
   addBookToCart(book: BookObj, quantity: number): Observable<any> {
     return this.httpService.addToCart(book, quantity);
+  }
+  updateBookQuantity(book: BookObj, quantity: number): Observable<any> {
+    return this.httpService.updateQuantity(book, quantity);
+  }
+  deleteBookFromCart(bookId: number): Observable<any> {
+    return this.httpService.deleteCart(bookId);
   }
 }
