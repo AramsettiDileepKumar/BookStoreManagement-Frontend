@@ -23,7 +23,8 @@ export class HeaderComponent implements OnInit {
     private dialog: MatDialog,
     private httpservice: HttpService,
     private dataService: DataService,
-    private router: Router
+    private router: Router,
+    private bookService: BookService
   ) {
     matIconRegistry.addSvgIconLiteral(
       'search-icon',
@@ -41,7 +42,16 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.httpservice.getAllbook().subscribe((res) => {
-      this.dataService.changeCurrentStateBookList(res);
+      this.dataService.changeState(res);
+    });
+    this.bookService
+      .getAllCartDetails()
+      .subscribe((res) => this.dataService.setAllCartItems(res.data));
+    this.bookService
+      .getAllBooksWishlist()
+      .subscribe((res) => this.dataService.updateWishlistBooks(res.data));
+    this.bookService.getAddress().subscribe((res: any) => {
+      this.dataService.updateAddressList(res.data);
     });
   }
   login() {
@@ -56,5 +66,8 @@ export class HeaderComponent implements OnInit {
   logOut() {
     localStorage.clear();
     this.router.navigate(['/books']);
+  }
+  wishlist() {
+    this.router.navigate(['/wishlist']);
   }
 }

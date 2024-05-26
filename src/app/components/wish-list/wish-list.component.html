@@ -1,0 +1,34 @@
+<div class="wishlist-container">
+  <div class="breadcrumb">
+    <a href="#" routerLink="/books">Home</a> / My Wishlist
+  </div>
+  <div class="wishlist-header">
+    <h2>My Wishlist ({{ wishlistBooks.length }})</h2>
+  </div>
+  <div class="wishlist-books">
+    <div class="book-card" *ngFor="let book of wishlistBooks">
+      <div class="book-image">
+        <img [src]="book.bookImage" alt="Image Not Found" />
+      </div>
+      <div class="book-details">
+        <h3>{{ book.bookName }}</h3>
+        <p>by {{ book.authorName }}</p>
+        <p class="price">Rs. {{ book.price }} <del>Rs.</del></p>
+      </div>
+      <button
+        mat-icon-button
+        (click)="book.bookId !== undefined && removeFromWishlist(book.bookId)"
+      >
+        <mat-icon
+          class="delet-icon"
+          svgIcon="delete-icon"
+          aria-hidden="false"
+          aria-label="Search SVG icon"
+        ></mat-icon>
+      </button>
+    </div>
+    <div *ngIf="wishlistBooks.length === 0" class="no-books">
+      No books in the wishlist.
+    </div>
+  </div>
+</div>

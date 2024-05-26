@@ -8,9 +8,6 @@ import { Component, OnInit } from '@angular/core';
 export class LoginSignupComponent implements OnInit {
   constructor() {}
   ngOnInit(): void {}
-  // onNoClick(): void {
-  //   this.dialogRef.close();
-  // }
   login = true;
   goToLogin() {
     this.login = true;
