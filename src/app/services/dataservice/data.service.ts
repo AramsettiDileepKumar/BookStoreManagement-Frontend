@@ -1,78 +1,77 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { BookObj } from 'src/assets/bookInterface';
+
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  bookListState = new BehaviorSubject<BookObj[]>([]);
-  currentBookList = this.bookListState.asObservable();
-  changeCurrentStateBookList(value: any) {
-    this.bookListState.next(value);
+  private booksList = new BehaviorSubject<BookObj[]>([]);
+  currentBookList = this.booksList.asObservable();
+  changeState(value: BookObj[]) {
+    this.booksList.next(value);
   }
-  private cartItems: { [bookId: number]: BookObj & { quantity: number } } = {};
-  private cartItemsSubject = new BehaviorSubject<
-    (BookObj & { quantity: number })[]
-  >([]);
-  private cartItemCount = new BehaviorSubject<number>(0);
-  constructor() {}
-
+  private allCartItemsSubject = new BehaviorSubject<any[]>([]);
+  currCartList = this.allCartItemsSubject.asObservable();
+  setAllCartItems(cartItems: any[]) {
+    this.allCartItemsSubject.next(cartItems);
+  }
+  private wishlistBooks = new BehaviorSubject<BookObj[]>([]);
+  currWishlist = this.wishlistBooks.asObservable();
+  updateWishlistBooks(book: BookObj) {
+    const currentWishlist = this.wishlistBooks.getValue();
+    this.wishlistBooks.next([...currentWishlist, book]);
+  }
+  updateWishlist(books: BookObj[]) {
+    this.wishlistBooks.next(books);
+  }
+  private allAddressList = new BehaviorSubject<any[]>([]);
+  currAddressList = this.allAddressList.asObservable();
+  updateAddressList(list: any) {
+    this.allAddressList.next(list);
+  }
   addToCart(book: BookObj, quantity: number = 1) {
     if (book.bookId === undefined) {
       console.error('Book ID is undefined');
       return;
     }
-    if (this.cartItems[book.bookId]) {
-      console.log('cart');
-      this.cartItems[book.bookId].quantity += quantity;
-      if (this.cartItems[book.bookId].quantity < 1) {
-        this.cartItems[book.bookId].quantity = 1;
+    const currentItems = this.allCartItemsSubject.getValue();
+    const itemIndex = currentItems.findIndex(
+      (item) => item.bookId === book.bookId
+    );
+    if (itemIndex > -1) {
+      currentItems[itemIndex].quantity += quantity;
+      if (currentItems[itemIndex].quantity < 1) {
+        currentItems[itemIndex].quantity = 1;
       }
     } else {
-      this.cartItems[book.bookId] = {
+      currentItems.push({
         ...book,
         quantity: quantity > 0 ? quantity : 1,
-      };
+      });
     }
-    this.updateCartItemsSubject();
+    this.allCartItemsSubject.next(currentItems);
   }
-  getCartItems(): Observable<(BookObj & { quantity: number })[]> {
-    return this.cartItemsSubject.asObservable();
-  }
-  setCartItems(cartItems: (BookObj & { quantity: number })[]): void {
-    this.cartItems = {};
-    cartItems.forEach((item) => {
-      if (item.bookId !== undefined) {
-        // Ensure bookId is not undefined
-        this.cartItems[item.bookId] = item;
-      } else {
-        console.error('Book ID is undefined for item:', item);
-      }
-    });
-    this.updateCartItemsSubject();
-  }
-  private updateCartItemsSubject() {
-    const cartItemsArray = Object.values(this.cartItems);
-    this.cartItemsSubject.next(cartItemsArray);
-    this.cartItemCount.next(cartItemsArray.length);
-  }
-  updateCartItemQuantity(book: BookObj, quantity: number) {
+  removeFromCart(book: BookObj): void {
     if (book.bookId === undefined) {
       console.error('Book ID is undefined');
       return;
     }
 
-    if (this.cartItems[book.bookId]) {
-      this.cartItems[book.bookId].quantity = quantity;
-      this.updateCartItemsSubject();
-    }
+    const currentItems = this.allCartItemsSubject.getValue();
+    const updatedItems = currentItems.filter(
+      (item) => item.bookId !== book.bookId
+    );
+
+    this.allCartItemsSubject.next(updatedItems);
   }
-  removeFromCart(book: BookObj) {
-    if (book.bookId === undefined) {
-      console.error('Book ID is undefined');
-      return;
-    }
-    delete this.cartItems[book.bookId];
-    this.updateCartItemsSubject();
+  /////
+
+  //------
+  private orderSummaryToggledSource = new Subject<void>();
+  orderSummaryToggled = this.orderSummaryToggledSource.asObservable();
+  toggleOrderSummary() {
+    this.orderSummaryToggledSource.next();
   }
+  constructor() {}
 }

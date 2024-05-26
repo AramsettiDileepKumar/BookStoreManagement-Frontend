@@ -12,13 +12,14 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { BookComponent } from './components/book/book.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
-import { BookContainerComponent } from './components/book-container/book-container.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
 import { LoginComponent } from './components/login/login.component';
 import { LoginSignupComponent } from './components/login-signup/login-signup.component';
 import { MatFormField } from '@angular/material/form-field';
+import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
+import { WishListComponent } from './components/wish-list/wish-list.component';
+import { OrderComponent } from './components/order/order.component';
 
 @NgModule({
   declarations: [
@@ -26,11 +27,12 @@ import { MatFormField } from '@angular/material/form-field';
     HeaderComponent,
     BookComponent,
     BookDetailsComponent,
-    BookContainerComponent,
-    DashboardComponent,
     CartDetailsComponent,
     LoginComponent,
     LoginSignupComponent,
+    CustomerDetailsComponent,
+    WishListComponent,
+    OrderComponent,
   ],
   imports: [
     BrowserModule,

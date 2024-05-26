@@ -10,13 +10,13 @@ import { BookObj } from 'src/assets/bookInterface';
   styleUrls: ['./book.component.scss'],
 })
 export class BookComponent implements OnInit {
-  @Input() bookObjList!: BookObj[];
-  bookList: BookObj[] = [];
-
+  bookObjList: BookObj[] = [];
   constructor(private dataService: DataService, private router: Router) {}
 
   ngOnInit(): void {
-    this.dataService.currentBookList.subscribe((res) => (this.bookList = res));
+    this.dataService.currentBookList.subscribe(
+      (res) => (this.bookObjList = res)
+    );
   }
   handleBook(book: BookObj) {
     this.router.navigate(['/bookdetails', book.bookId]);

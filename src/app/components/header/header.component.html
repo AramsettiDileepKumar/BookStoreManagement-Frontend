@@ -1,29 +1,45 @@
 <div class="header-main-cnt">
-    <div class="header-left-cnt">
-        <img src="assets/images/education.png" alt="Image not found" />
-        <h3 class="title" routerLink="/dashboard/books">BookStore</h3>
-    </div>
+  <div class="left-cnt">
+    <img src="assets/images/education.png" alt="Image not found" />
+    <h3 class="title" routerLink="/books">BookStore</h3>
+  </div>
 
-    <div class="search-container">
-        <input type="text" class="search-input" placeholder="Search..." />
-        <mat-icon class="search-icon" svgIcon="search-icon" aria-hidden="false" aria-label="Search SVG icon"></mat-icon>
-    </div>
-    <div class="profile" [matMenuTriggerFor]="profileMenu">
-        <mat-icon class="profile-icon" svgIcon="profile-icon" aria-hidden="false" aria-label="Search SVG icon"></mat-icon>
-        <span>Profile</span>
-    </div>
-    <div class="cart" routerLink="/cart">
-        <mat-icon class="cart-icon" svgIcon="cart-icon" aria-hidden="false" aria-label="Search SVG icon"></mat-icon>
-        <span>Cart</span>
-    </div>
+  <div class="search-container">
+    <input type="text" class="search-input" placeholder="Search..." />
+    <mat-icon
+      class="search-icon"
+      svgIcon="search-icon"
+      aria-hidden="false"
+      aria-label="Search SVG icon"
+    ></mat-icon>
+  </div>
+  <div class="profile" [matMenuTriggerFor]="profileMenu">
+    <mat-icon
+      class="profile-icon"
+      svgIcon="profile-icon"
+      aria-hidden="false"
+      aria-label="Search SVG icon"
+    ></mat-icon>
+    <span>Profile</span>
+  </div>
+  <div class="cart" routerLink="/cart">
+    <mat-icon
+      class="cart-icon"
+      svgIcon="cart-icon"
+      aria-hidden="false"
+      aria-label="Search SVG icon"
+    ></mat-icon>
+    <span>Cart</span>
+  </div>
 </div>
 
 <mat-menu #profileMenu>
-    <span class="welcome">Welcome</span><br />
-    <button mat-menu-item class="login-btn" (click)="login()">
+  <span>Welcome</span><br />
+  <button mat-menu-item class="login-btn" (click)="login()">
     <span>LOGIN/SIGNUP</span>
   </button>
-    <button mat-menu-item class="login-btn" (click)="logOut()">Logout</button>
-    <!-- <div class="order-icon">My Orders</div>
-    <div class="heart-icon">&#x2764; Wishlist</div> -->
+  <button mat-menu-item class="login-btn" (click)="logOut()">Logout</button>
+  <div class="order-icon">My Orders</div>
+  <div class="heart-icon" (click)="wishlist()">&#x2764; Wishlist</div>
 </mat-menu>
+<router-outlet></router-outlet>

@@ -1,12 +1,14 @@
 import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BookComponent } from './components/book/book.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { BookContainerComponent } from './components/book-container/book-container.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
 import { LoginComponent } from './components/login/login.component';
 import { LoginSignupComponent } from './components/login-signup/login-signup.component';
+import { WishListComponent } from './components/wish-list/wish-list.component';
+import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
+import { OrderComponent } from './components/order/order.component';
+import { HeaderComponent } from './components/header/header.component';
 
 const routes: Routes = [
   {
@@ -19,11 +21,11 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: DashboardComponent,
+    component: HeaderComponent,
     children: [
       {
         path: 'books',
-        component: BookContainerComponent,
+        component: BookComponent,
       },
       {
         path: 'bookdetails/:bookId',
@@ -32,6 +34,18 @@ const routes: Routes = [
       {
         path: 'cart',
         component: CartDetailsComponent,
+      },
+      {
+        path: 'wishlist',
+        component: WishListComponent,
+      },
+      {
+        path: 'customer',
+        component: CustomerDetailsComponent,
+      },
+      {
+        path: 'orders',
+        component: OrderComponent,
       },
     ],
   },

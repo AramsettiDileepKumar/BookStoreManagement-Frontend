@@ -35,16 +35,46 @@ export class HttpService {
       password: password,
     });
   }
-  addToCart(book: BookObj, quantity: number): Observable<any> {
+  addToCart(book: BookObj, quantity: number, token?: string): Observable<any> {
     const requestBody = { bookId: book.bookId, quantity };
+    if (token != '' && token != undefined) {
+      const req = { bookId: book, quantity };
+      return this.httpclient.post<any>(
+        'https://localhost:7274/api/Cart/AddToCart',
+        req,
+        {
+          headers: new HttpHeaders({
+            //'Accept': "application/json",
+            Authorization: `Bearer ${token}` || '',
+          }),
+        }
+      );
+    }
     return this.httpclient.post<any>(
       'https://localhost:7274/api/Cart/AddToCart',
       requestBody,
       { headers: this.authHeader }
     );
   }
-  updateQuantity(book: BookObj, quantity: number): Observable<any> {
+  updateQuantity(
+    book: BookObj,
+    quantity: number,
+    token?: string
+  ): Observable<any> {
     const requestBody = { bookId: book.bookId, quantity };
+    if (token != '' && token != undefined) {
+      const req = { bookId: book, quantity };
+      return this.httpclient.put<any>(
+        'https://localhost:7274/api/Cart/UpdateQuantity',
+        req,
+        {
+          headers: new HttpHeaders({
+            //'Accept': "application/json",
+            Authorization: `Bearer ${token}` || '',
+          }),
+        }
+      );
+    }
     return this.httpclient.put<any>(
       'https://localhost:7274/api/Cart/UpdateQuantity',
       requestBody,
@@ -54,5 +84,89 @@ export class HttpService {
   deleteCart(bookId: number): Observable<any> {
     const url = `https://localhost:7274/api/Cart/DeleteCart?BookId=${bookId}`;
     return this.httpclient.delete<any>(url, { headers: this.authHeader });
+  }
+  addToWishlist(book: BookObj, token?: string): Observable<any> {
+    if (token !== '' && token !== undefined) {
+      return this.httpclient.post<any>(
+        `https://localhost:7274/api/WishList/addwishlist${book.bookId}`,
+        {},
+        {
+          headers: new HttpHeaders({
+            Authorization: `Bearer ${token}` || '',
+          }),
+        }
+      );
+    }
+    return this.httpclient.post<any>(
+      `https://localhost:7274/api/WishList/addwishlist${book.bookId}`,
+      {},
+      { headers: this.authHeader }
+    );
+  }
+  getAllWishlist(token?: string): Observable<any> {
+    if (token !== '' && token !== undefined) {
+      return this.httpclient.get<any>(
+        'https://localhost:7274/api/WishList/GetWishlistBooks',
+        {
+          headers: new HttpHeaders({
+            Authorization: `Bearer ${token}` || '',
+          }),
+        }
+      );
+    }
+    return this.httpclient.get<any>(
+      'https://localhost:7274/api/WishList/GetWishlistBooks',
+      { headers: this.authHeader }
+    );
+  }
+  deleteWishlist(bookId: number, token?: string): Observable<any> {
+    const url = `https://localhost:7274/api/WishList/DeleteWishlist/${bookId}`;
+    if (token !== '' && token !== undefined) {
+      return this.httpclient.delete<any>(url, {
+        headers: new HttpHeaders({
+          Authorization: `Bearer ${token}` || '',
+        }),
+      });
+    }
+    return this.httpclient.delete<any>(url, { headers: this.authHeader });
+  }
+  getAddress(token?: string) {
+    if (token !== '' && token !== undefined) {
+      return this.httpclient.get<any>(`https://localhost:7274/api/Address`, {
+        headers: new HttpHeaders({
+          Authorization: `Bearer ${token}` || '',
+        }),
+      });
+    }
+    return this.httpclient.get(`https://localhost:7274/api/Address`, {
+      headers: this.authHeader,
+    });
+  }
+  updataAddress(data: any) {
+    return this.httpclient.put(
+      `https://localhost:7274/api/Address/updateAddress${data.addressId}`,
+      data,
+      {
+        headers: this.authHeader,
+      }
+    );
+  }
+  addAddress(data: any) {
+    return this.httpclient.post(
+      `https://localhost:7274/api/Address/addAddress
+    `,
+      data,
+      {
+        headers: this.authHeader,
+      }
+    );
+  }
+  removeAddress(data: any) {
+    return this.httpclient.delete(
+      `https://localhost:7274/api/Address/deleteAddress${data}`,
+      {
+        headers: this.authHeader,
+      }
+    );
   }
 }
