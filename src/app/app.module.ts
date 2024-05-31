@@ -20,6 +20,8 @@ import { MatFormField } from '@angular/material/form-field';
 import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 import { WishListComponent } from './components/wish-list/wish-list.component';
 import { OrderComponent } from './components/order/order.component';
+import { OrderListComponent } from './components/order-list/order-list.component';
+import { PipePipe } from './services/pipeservice/pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { OrderComponent } from './components/order/order.component';
     CustomerDetailsComponent,
     WishListComponent,
     OrderComponent,
+    OrderListComponent,
+    PipePipe,
   ],
   imports: [
     BrowserModule,

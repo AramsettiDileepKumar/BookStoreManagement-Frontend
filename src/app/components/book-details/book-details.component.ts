@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { BookService } from 'src/app/services/bookservice/book.service';
 import { DataService } from 'src/app/services/dataservice/data.service';
@@ -116,7 +118,6 @@ export class BookDetailsComponent implements OnInit {
   addToWishlist() {
     this.addedToWishlist = true;
     if (localStorage.getItem('authToken')) {
-      // Auth token is present, call addToWishlist from BookService
       this.bookService.addAllToWishlist(this.selectedBook).subscribe(() => {
         console.log('Book added to wishlist successfully');
       });

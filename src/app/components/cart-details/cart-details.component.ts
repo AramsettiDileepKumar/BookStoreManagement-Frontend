@@ -10,6 +10,8 @@ import { BookObj } from 'src/assets/bookInterface';
 import { DataService } from 'src/app/services/dataservice/data.service';
 import { BookService } from 'src/app/services/bookservice/book.service';
 import { Subscription } from 'rxjs';
+import { HttpService } from 'src/app/services/httpservice/http.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-cart-details',
@@ -21,6 +23,7 @@ export class CartDetailsComponent implements OnInit {
   showOrderSummary: boolean = false;
   showOrderPlaced: boolean = false;
   cartItems: (BookObj & { quantity: number })[] = [];
+  bookIds!: any[];
   authToken: string | null = null;
   count: number = 1;
   placeOrder: boolean = false;
@@ -31,6 +34,7 @@ export class CartDetailsComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private bookService: BookService,
+    private httpService: HttpService,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
     private router: Router,
@@ -45,7 +49,11 @@ export class CartDetailsComponent implements OnInit {
       sanitizer.bypassSecurityTrustHtml(DROP_DOWN)
     );
   }
+  orderaddress: any;
 
+  onOrderAddressChanged(address: any) {
+    this.orderaddress = address;
+  }
   ngOnInit(): void {
     this.dataService.currCartList.subscribe((response) => {
       this.cartItems = response;
@@ -54,11 +62,8 @@ export class CartDetailsComponent implements OnInit {
       this.dataService.orderSummaryToggled.subscribe(() => {
         this.toggleOrderSummary();
       });
+    this.updateCartBookIds();
   }
-  toggleAddressDetails() {
-    this.showAddressDetails = !this.showAddressDetails;
-  }
-
   toggleOrderSummary() {
     this.showOrderSummary = !this.showOrderSummary;
   }
@@ -116,17 +121,23 @@ export class CartDetailsComponent implements OnInit {
       this.showAddressDetails = !this.showAddressDetails;
       this.placeOrder = !this.placeOrder;
     } else {
-      this.router.navigate(['/books']).then(() => {
-        const dialogRef = this.dialog.open(LoginSignupComponent, {
-          data: { value: 'placeOrder', cart: this.cartItems },
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-          console.log('The dialog was closed');
-        });
+      const dialogRef = this.dialog.open(LoginSignupComponent, {
+        data: { value: 'placeOrder', cart: this.cartItems },
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log('The dialog was closed');
+        // Ensure this.data is initialized after dialog is closed
       });
     }
   }
+
+  updateCartBookIds(): void {
+    this.bookIds = this.cartItems.map((item) => item.bookId);
+  }
   handleCheckout() {
+    this.httpService
+      .addOrder(this.bookIds)
+      .subscribe((err) => console.log(err));
     this.router.navigate(['/orders']);
   }
 }

@@ -1,7 +1,6 @@
 <div class="address-detail">
   <div class="list-of-adderss">
     <div class="address-header">
-      <span>Address Details</span>
       <button
         mat-stroked-button
         color="warn"
@@ -43,7 +42,7 @@
           color="primary"
           class="continue-btn"
           *ngIf="!showIcons"
-          (click)="handleContinue()"
+          (click)="handleContinue(address)"
         >
           CONTINUE
         </button>
@@ -54,7 +53,7 @@
 
 <div class="address-detail" *ngIf="!editaddress">
   <div class="address-header">
-    <span>Customer Details</span>
+    <span>Address</span>
   </div>
   <form [formGroup]="addressForm">
     <div class="customer-address">

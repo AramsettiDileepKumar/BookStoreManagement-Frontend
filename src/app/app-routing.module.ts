@@ -9,6 +9,7 @@ import { WishListComponent } from './components/wish-list/wish-list.component';
 import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 import { OrderComponent } from './components/order/order.component';
 import { HeaderComponent } from './components/header/header.component';
+import { OrderListComponent } from './components/order-list/order-list.component';
 
 const routes: Routes = [
   {
@@ -36,7 +37,7 @@ const routes: Routes = [
         component: CartDetailsComponent,
       },
       {
-        path: 'wishlist',
+        path: 'wishList',
         component: WishListComponent,
       },
       {
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: 'orders',
         component: OrderComponent,
+      },
+      {
+        path: 'orderList',
+        component: OrderListComponent,
       },
     ],
   },

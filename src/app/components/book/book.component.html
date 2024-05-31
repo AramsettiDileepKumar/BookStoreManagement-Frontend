@@ -1,20 +1,43 @@
 <div class="book-outer-container">
-    <div class="book-container" *ngFor="let book of bookObjList" (click)="handleBook(book)">
-        <div class="book-image-background-container">
-            <img class="book-image" [src]="book.bookImage" alt="Image not found" />
+  <div class="books-quantity-sort-cnt">
+    <div class="books-qty">
+      <div class="books-txt">Books</div>
+      <div class="qty">({{ bookObjList.length }} Items)</div>
+    </div>
+    <div class="sort-cnt">
+      <div>Sort by relevance</div>
+      <mat-icon svgIcon="drop-down-icon"></mat-icon>
+    </div>
+  </div>
+  <div class="all-books-cntr">
+    <div
+      class="book-container"
+      *ngFor="let book of bookObjList | pipe : searchString"
+      [style.background-color]="book.colour"
+      (click)="handleBook(book)"
+    >
+      <div class="book-image-background-container">
+        <img class="book-image" [src]="book.bookImage" alt="Image not found" />
+      </div>
+      <div class="book-details">
+        <span class="book-title"
+          ><b>{{ book.bookName }}</b></span
+        >
+        <div class="book-author">{{ book.authorName }}</div>
+
+        <div class="rating-qty-cnt">
+          <span class="book-rating">4.5 *</span>
+          <div class="book-qty">({{ book.quantity }})</div>
         </div>
-        <div class="book-details">
-            <span class="book-title"><b>{{ book.bookName }}</b></span
-      >
-      <span class="book-author">{{ book.authorName }}</span>
-
-            <div class="quantity-price">
-                <span class="book-rating">4.5 *</span>
-                <span>({{ book.quantity }})</span>
-            </div>
-
-            <span class="book-price"><b>Rs. {{ book.price }}</b></span
-      >
+        <div class="price-cnt">
+          <span
+            ><b>Rs. {{ book.price }}</b></span
+          >
+          <div class="discount">
+            <del>Rs. {{ book.price + 500 }}</del>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
