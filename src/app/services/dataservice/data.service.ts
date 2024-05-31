@@ -30,6 +30,17 @@ export class DataService {
   updateAddressList(list: any) {
     this.allAddressList.next(list);
   }
+  private OrderList = new BehaviorSubject<any[]>([]);
+  currOrderList = this.OrderList.asObservable();
+  updateOrderList(data: any[]) {
+    this.OrderList.next(data);
+    console.log('hello');
+  }
+  private searchstring = new BehaviorSubject('');
+  currentSearchString = this.searchstring.asObservable();
+  updateSearchString(state: string) {
+    this.searchstring.next(state);
+  }
   addToCart(book: BookObj, quantity: number = 1) {
     if (book.bookId === undefined) {
       console.error('Book ID is undefined');
@@ -65,13 +76,27 @@ export class DataService {
 
     this.allCartItemsSubject.next(updatedItems);
   }
-  /////
-
   //------
   private orderSummaryToggledSource = new Subject<void>();
   orderSummaryToggled = this.orderSummaryToggledSource.asObservable();
   toggleOrderSummary() {
     this.orderSummaryToggledSource.next();
+  }
+  //-----------------------
+  clearBooksList() {
+    this.booksList.next([]);
+  }
+
+  clearCartItems() {
+    this.allCartItemsSubject.next([]);
+  }
+
+  clearWishlist() {
+    this.wishlistBooks.next([]);
+  }
+
+  clearAddressList() {
+    this.allAddressList.next([]);
   }
   constructor() {}
 }

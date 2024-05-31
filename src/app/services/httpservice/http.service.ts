@@ -10,7 +10,7 @@ export class HttpService {
     Authorization: `Bearer ${localStorage.getItem('authToken')}` || '',
   });
   constructor(private httpclient: HttpClient) {}
-  getAllbook(): Observable<any> {
+  getAllbooks(): Observable<any> {
     return this.httpclient.get(`https://localhost:7274/api/Book`);
   }
   getAllCartDetails(token?: any) {
@@ -167,6 +167,28 @@ export class HttpService {
       {
         headers: this.authHeader,
       }
+    );
+  }
+  getOrderList(token?: any) {
+    if (token !== '' && token !== undefined) {
+      return this.httpclient.get<any>(
+        `https://localhost:7274/api/Order/getOrders`,
+        {
+          headers: new HttpHeaders({
+            Authorization: `Bearer ${token}` || '',
+          }),
+        }
+      );
+    }
+    return this.httpclient.get(`https://localhost:7274/api/Order/getOrders`, {
+      headers: this.authHeader,
+    });
+  }
+  addOrder(data: any) {
+    return this.httpclient.post(
+      `https://localhost:7274/api/Order/addOrder`,
+      { bookIds: data },
+      { headers: this.authHeader }
     );
   }
 }

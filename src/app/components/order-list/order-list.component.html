@@ -1,0 +1,30 @@
+<div class="orderlist-main-cnt">
+  <div class="heading-content">
+    <div class="orderlist-items">
+      <span class="home" routerLink="/books">Home / </span>
+      <span class="items">My OrderList</span>
+    </div>
+  </div>
+  <div class="orderlist-cnt" *ngFor="let order of orderList">
+    <div class="content" *ngFor="let book of order.books">
+      <div class="book-img">
+        <img [src]="book.bookImage" alt="{{ book.bookName }}" />
+      </div>
+      <div class="cart-detail">
+        <span class="booktitle">{{ book.bookName }}</span>
+        <span style="color: #818181">{{ book.authorName }}</span>
+        <div class="rating-cnt">
+          <span class="sellingprice">
+            <b>Rs.{{ book.price }} </b>
+            <span class="offer">Rs.1999</span>
+          </span>
+        </div>
+      </div>
+      <div class="ordered-date">
+        <span
+          ><b>Order Placed on {{ order.orderDate }}</b></span
+        >
+      </div>
+    </div>
+  </div>
+</div>

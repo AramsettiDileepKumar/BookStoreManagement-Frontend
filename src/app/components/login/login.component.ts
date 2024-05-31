@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { log } from 'console';
 import { BookService } from 'src/app/services/bookservice/book.service';
 import { DataService } from 'src/app/services/dataservice/data.service';
+import { HttpService } from 'src/app/services/httpservice/http.service';
 import { UserService } from 'src/app/services/userservice/user.service';
 
 @Component({
@@ -25,6 +26,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private bookService: BookService,
     private dataService: DataService,
+    private httpService: HttpService,
     @Inject(MAT_DIALOG_DATA) public data: { value: string; cart: any }
   ) {}
 
@@ -47,7 +49,10 @@ export class LoginComponent implements OnInit {
     this.userService.loginApiCall(email, password).subscribe(
       (res) => {
         localStorage.setItem('authToken', res.data);
-        if (this.data.value == 'placeOrder') {
+        console.log('hello');
+
+        if (this.data && this.data.value === 'placeOrder') {
+          console.log('Login');
           this.templist = this.data.cart;
           console.log(this.templist);
           this.bookService.getAllCartDetails(res.data).subscribe(
@@ -72,11 +77,20 @@ export class LoginComponent implements OnInit {
             },
             (err) => console.log(err)
           );
-          this.bookService.getAddress(res.data).subscribe((result: any) => {
-            this.dataService.updateAddressList(result.data);
-          });
+          this.httpService
+            .getOrderList(res.data)
+            .subscribe((res) => this.dataService.updateOrderList(res));
         }
-        //this.router.navigate(['/books']);
+        this.bookService.getAddress(res.data).subscribe((result) => {
+          this.dataService.updateAddressList(result.data);
+        });
+        this.bookService
+          .getAllCartDetails(res.data)
+          .subscribe((result) => this.dataService.setAllCartItems(result.data));
+        this.bookService
+          .getAllBooksWishlist(res.data)
+          .subscribe((result) => this.dataService.updateWishlist(result.data));
+        this.dialogRef.afterClosed().subscribe((result) => {});
       },
       (err) => console.log(err)
     );
@@ -98,9 +112,7 @@ export class LoginComponent implements OnInit {
           .subscribe((res) => console.log(res));
       }
     }
-    this.bookService
-      .getAllCartDetails(token)
-      .subscribe((res) => this.dataService.setAllCartItems(res.data));
+
     return backendData;
   }
   updateWishlist(localList: any, backendData: any, token: string) {
@@ -115,8 +127,5 @@ export class LoginComponent implements OnInit {
           .subscribe((res) => console.log(res));
       }
     }
-    this.bookService
-      .getAllBooksWishlist(token)
-      .subscribe((res) => this.dataService.updateWishlist(res.data));
   }
 }

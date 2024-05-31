@@ -49,17 +49,17 @@
   </ng-template>
 
   <!-- Address Details & Order Summary -->
-  <div class="cart-details-container" *ngIf="showAddressDetails">
-    <app-customer-details></app-customer-details>
-
+  <div class="cart-details-container">
+    <div class="cart-section">
+      <h3>Address Details</h3>
+      <div class="address-details" *ngIf="showAddressDetails">
+        <app-customer-details></app-customer-details>
+      </div>
+    </div>
     <!-- Order Summary -->
     <div class="cart-section">
       <h3>Order Summary</h3>
-      <div
-        class="order-summary"
-        *ngIf="showOrderSummary"
-        (click)="$event.stopPropagation()"
-      >
+      <div class="order-summary" *ngIf="showOrderSummary">
         <div *ngFor="let item of cartItems">
           <div class="book-item">
             <img [src]="item.bookImage" alt="Book Cover" />

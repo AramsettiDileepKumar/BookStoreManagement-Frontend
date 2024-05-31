@@ -12,12 +12,12 @@ import { HttpService } from 'src/app/services/httpservice/http.service';
 })
 export class CustomerDetailsComponent implements OnInit {
   customerForm: FormGroup;
-  showContinue: boolean = false;
   showAddNewAddress: boolean = false;
   editaddress: boolean = true;
   showIcons: boolean = false;
   editadd: any = {};
   addressList: any[] = [];
+  orderaddress: any;
   addressForm!: FormGroup;
   typeDisplayMap: { [key: string]: string } = {
     '1': 'Home',
@@ -33,8 +33,6 @@ export class CustomerDetailsComponent implements OnInit {
     state: '',
     type: '',
   };
-
-  @Output() addressSelected = new EventEmitter<number>();
 
   constructor(
     private fb: FormBuilder,
@@ -126,8 +124,10 @@ export class CustomerDetailsComponent implements OnInit {
     }
     this.editaddress = true;
   }
-  handleContinue() {
+  handleContinue(data: any) {
     this.dataService.toggleOrderSummary();
-    this.showContinue = !this.showContinue;
+    this.showIcons = true;
+    this.showAddNewAddress = true;
+    this.orderaddress = data;
   }
 }

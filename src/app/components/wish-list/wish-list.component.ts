@@ -32,22 +32,25 @@ export class WishListComponent implements OnInit {
   }
 
   loadWishlist() {
-    if (localStorage.getItem('authToken')) {
-      this.bookService.getAllBooksWishlist().subscribe(
-        (books) => {
-          this.wishlistBooks = books.data;
-        },
-        (error) => {
-          console.error('Error fetching wishlist books:', error);
-        }
-      );
-    } else {
-      console.log('Auth token not present. Loading wishlist from local data.');
-      this.dataService.currWishlist.subscribe((wishlist) => {
-        console.log('Local wishlist:', wishlist);
-        this.wishlistBooks = [...wishlist];
-      });
-    }
+    this.dataService.currWishlist.subscribe(
+      (res) => (this.wishlistBooks = res)
+    );
+    // if (localStorage.getItem('authToken')) {
+    //   this.bookService.getAllBooksWishlist().subscribe(
+    //     (books) => {
+    //       this.wishlistBooks = books.data;
+    //     },
+    //     (error) => {
+    //       console.error('Error fetching wishlist books:', error);
+    //     }
+    //   );
+    // } else {
+    //   console.log('Auth token not present. Loading wishlist from local data.');
+    //   this.dataService.currWishlist.subscribe((wishlist) => {
+    //     console.log('Local wishlist:', wishlist);
+    //     this.wishlistBooks = [...wishlist];
+    //   });
+    // }
   }
   removeFromWishlist(bookId: number) {
     if (localStorage.getItem('authToken')) {
