@@ -1,79 +1,249 @@
-<div class="cart-outer-cnt">
-  <div class="breadcrumb">
-    <a href="#" routerLink="/books">Home</a> / <a>My Cart</a>
+<div class="cart-main-cnt">
+  <div class="back-to-dashbaord">
+    <span
+      ><span routerLink="/books">Home / </span><strong> CartList </strong></span
+    >
   </div>
-  <ng-container *ngIf="cartItems.length > 0; else emptyCart">
-    <div class="cart-details-container">
-      <div class="cart-section">
-        <div class="cart-cnt">
-          <h3>My cart</h3>
-          <div class="loc-icon-cnt">
-            <span class="loc-icon">
-              <mat-icon svgIcon="location-icon"></mat-icon>
-              Dileep,Bengalore,No...
-              <mat-icon svgIcon="drop-down-icon"></mat-icon>
-            </span>
-          </div>
+  <div class="cart-outer-cnt">
+    <!-- <div class="cart-outer"> -->
+    <div class="count-cnt">
+      <span
+        ><b>My cart({{ cartItems.length }})</b></span
+      >
+      <div class="loc-icon-cnt" *ngIf="cartItems.length > 0; else emptyCart">
+        <span class="loc-icon">
+          <mat-icon svgIcon="location-icon"></mat-icon>
+          Dileep Kumar,Bengaluru,No...
+          <mat-icon class="drop-down" svgIcon="drop-down-icon"></mat-icon>
+        </span>
+      </div>
+    </div>
+    <!-- <br> -->
+    <div *ngFor="let book of cartItems" class="cart-inf-cnt">
+      <!-- <div class="content"> -->
+      <img [src]="book.bookImage" alt="" />
+      <div class="cart-detail">
+        <span class="booktitle">{{ book.bookName }}</span>
+        <span class="bookauthor" style="color: #818181">{{
+          book.authorName
+        }}</span>
+        <div class="rating-cnt">
+          <span class="sellingprice"
+            >Rs.{{ book.price }}
+            <span class="originalprice">Rs.1999</span>
+          </span>
         </div>
+        <div class="count">
+          <span class="symbol" (click)="decreaseCount(book)"> -</span>
+          <span class="countvalue">{{ book.quantity }}</span>
+          <span class="symbol" (click)="increaseCount(book)">+</span>
+          <span class="remove" (click)="removeFromCart(book)">Remove</span>
+        </div>
+      </div>
+      <!-- </div> -->
+    </div>
 
-        <div class="book-details">
-          <div class="book-item" *ngFor="let item of cartItems">
-            <img [src]="item.bookImage" alt="Book Cover" />
-            <div class="book-info">
-              <h4>Title: {{ item.bookName }}</h4>
-              <p>Author: {{ item.authorName }}</p>
-              <p>Price: Rs. {{ item.price }} <del>Rs. 699</del></p>
-              <div class="quantity-update">
-                <span class="symbol" (click)="decreaseCount(item)">-</span>
-                <span class="number-of-books">{{ item.quantity }}</span>
-                <span class="symbol" (click)="increaseCount(item)">+</span>
-                <button (click)="removeFromCart(item)">Remove</button>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div *ngIf="cartItems.length > 0" class="place-order-btn">
+      <button mat-raised-button color="primary" (click)="handlePlaceOrder()">
+        PLACE ORDER
+      </button>
+    </div>
+    <!-- </div> -->
+  </div>
+  <br />
+
+  <div class="bottom" *ngIf="placeorder">Address Details</div>
+  <div class="address-detail" *ngIf="!placeorder">
+    <div class="list-of-adderss">
+      <div class="count-cnt">
+        <span><b>Customer Details</b></span>
         <button
-          class="place-order-button"
-          *ngIf="!placeOrder"
-          (click)="handlePlaceOrder()"
+          mat-stroked-button
+          color="warn"
+          class="add-add"
+          (click)="editAddress(emptyAddress)"
         >
-          Place Order
+          Add New Address
         </button>
       </div>
-    </div>
-  </ng-container>
-
-  <!-- Empty Cart Message -->
-  <ng-template #emptyCart>
-    <p>Your cart is empty.</p>
-  </ng-template>
-
-  <!-- Address Details & Order Summary -->
-  <div class="cart-details-container">
-    <div class="cart-section">
-      <h3>Address Details</h3>
-      <div class="address-details" *ngIf="showAddressDetails">
-        <app-customer-details></app-customer-details>
+      <div class="address-main" *ngFor="let address of addressList">
+        <div class="old-address">
+          <div>{{ address.name }}</div>
+          <div>{{ address.address }}</div>
+          <div>{{ address.city }}, {{ address.state }}</div>
+          <div>{{ address.mobileNumber }}</div>
+        </div>
+        <div class="address-btn">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="editAddress(address)"
+            class="continue-btn"
+          >
+            EDIT ADDRESS
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="removeAddress(address.addressId)"
+            class="remove-btn"
+          >
+            REMOVE ADDRESS
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="handleContinue(address)"
+          >
+            CONTINUE
+          </button>
+        </div>
       </div>
     </div>
-    <!-- Order Summary -->
-    <div class="cart-section">
-      <h3>Order Summary</h3>
-      <div class="order-summary" *ngIf="showOrderSummary">
-        <div *ngFor="let item of cartItems">
-          <div class="book-item">
-            <img [src]="item.bookImage" alt="Book Cover" />
-            <div class="book-info">
-              <h4>Title: {{ item.bookName }}</h4>
-              <p>Author: {{ item.authorName }}</p>
-              <p>Price: Rs. {{ item.price }}</p>
+  </div>
+  <br />
+
+  <div class="address-detail" *ngIf="!editaddress">
+    <div class="address-header">
+      <span><b>Customer Details</b></span>
+    </div>
+    <form [formGroup]="addressForm">
+      <div class="customer-address">
+        <div class="name-mobile-cnt">
+          <div class="field-cnt">
+            <div class="value">Full Name</div>
+            <div>
+              <input
+                type="text"
+                formControlName="name"
+                placeholder="eg:abc"
+                class="input-cnt"
+              />
+            </div>
+          </div>
+          <div class="field-cnt">
+            <div class="value">Mobile Number</div>
+            <div>
+              <input
+                type="tel"
+                formControlName="mobileNumber"
+                placeholder="eg:1234567890"
+                class="input-cnt"
+              />
             </div>
           </div>
         </div>
-        <button class="checkout-button" (click)="handleCheckout()">
-          Checkout
+        <div class="address-cnt">
+          <div class="value">Address</div>
+          <textarea
+            formControlName="address"
+            placeholder="eg:address"
+          ></textarea>
+        </div>
+        <div class="city-town">
+          <div class="field-cnt">
+            <div class="value">City/Town</div>
+            <div>
+              <input
+                type="text"
+                formControlName="city"
+                placeholder="eg:Dharmapuri"
+                class="input-cnt"
+              />
+            </div>
+          </div>
+          <div class="field-cnt">
+            <div class="value">State</div>
+            <div>
+              <input
+                type="text"
+                formControlName="state"
+                placeholder="eg:Tamilnadu"
+                class="input-cnt"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="type">
+          <div class="value">Type</div>
+          <div class="type-list">
+            <div>
+              <input
+                type="radio"
+                name="type"
+                formControlName="type"
+                value="Home"
+              />
+              Home
+            </div>
+            <div>
+              <input
+                type="radio"
+                name="type"
+                formControlName="type"
+                value="Work"
+              />
+              Work
+            </div>
+            <div>
+              <input
+                type="radio"
+                name="type"
+                formControlName="type"
+                value="Other"
+              />
+              Other
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="continue">
+        <button
+          mat-raised-button
+          color="primary"
+          class="continue-btn"
+          (click)="handleaddress()"
+        >
+          CONTINUE
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="cart-order-cnt">
+    <div class="address-header">
+      <span><b>Order Summary</b></span>
+    </div>
+    <div *ngIf="!order" class="order-summary">
+      <div *ngFor="let book of cartItems" class="cart-inf-cnt">
+        <img [src]="book.bookImage" alt="" />
+        <div class="cart-detail">
+          <span class="booktitle">{{ book.bookName }}</span>
+          <span class="bookauthor" style="color: #818181">{{
+            book.authorName
+          }}</span>
+          <div class="rating-cnt">
+            <span class="sellingprice"
+              >Rs.{{ book.price }}
+              <span class="originalprice">Rs.1999</span>
+            </span>
+          </div>
+          <br /><br />
+        </div>
+      </div>
+      <div class="continue">
+        <button
+          mat-raised-button
+          color="primary"
+          class="continue-btn"
+          (click)="handleCheckout()"
+        >
+          CHECKOUT
         </button>
       </div>
     </div>
   </div>
 </div>
+<ng-template #emptyCart>
+  <p>Your cart is empty.</p>
+</ng-template>
